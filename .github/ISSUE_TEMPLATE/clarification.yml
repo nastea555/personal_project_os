@@ -1,0 +1,36 @@
+name: Clarification (PO)
+description: A question or edit the PO / BA must resolve in a spec
+title: "CL-XX: <short question>"
+labels: ["clarification"]
+body:
+  - type: input
+    id: spec
+    attributes:
+      label: Spec and location
+      placeholder: "F-UI-001 · AC-UI-008, TC-UI-038"
+    validations:
+      required: true
+  - type: dropdown
+    id: blocking
+    attributes:
+      label: Blocks development?
+      options: ["No", "Yes"]
+    validations:
+      required: true
+  - type: textarea
+    id: question
+    attributes:
+      label: Question / problem
+      description: Quote the spec. Show two readings with a concrete example.
+    validations:
+      required: true
+  - type: textarea
+    id: options
+    attributes:
+      label: Options and QA recommendation
+      placeholder: "A — …\nB — …\nRecommended: A, because …"
+  - type: textarea
+    id: source
+    attributes:
+      label: Source
+      placeholder: "QA review report F-xx / PO questions Q-xx"

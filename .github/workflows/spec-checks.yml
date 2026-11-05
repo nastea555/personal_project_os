@@ -1,0 +1,27 @@
+name: spec-checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  spec-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Unit tests of the req-review scripts
+        working-directory: .claude/skills/req-review/scripts
+        run: python -m unittest discover -s tests -v
+      - name: Deterministic checks on every feature spec
+        run: |
+          status=0
+          for spec in specs/features/*.md; do
+            echo "::group::$spec"
+            python .claude/skills/req-review/scripts/run_all.py "$spec" || status=1
+            echo "::endgroup::"
+          done
+          exit $status

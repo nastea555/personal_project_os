@@ -1,0 +1,37 @@
+name: qa-gate
+
+# Merge is allowed only when QA has set the label `qa-approved`
+# and `qa-changes-requested` is absent. New commits remove `qa-approved`.
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, labeled, unlabeled]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  qa-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: New commits reset QA approval
+        if: github.event.action == 'synchronize' && contains(github.event.pull_request.labels.*.name, 'qa-approved')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr edit ${{ github.event.pull_request.number }} --repo ${{ github.repository }} --remove-label qa-approved
+          echo "::error::New commits after QA approval. QA must review again."
+          exit 1
+      - name: Check QA labels
+        if: github.event.action != 'synchronize' || !contains(github.event.pull_request.labels.*.name, 'qa-approved')
+        env:
+          LABELS: ${{ toJson(github.event.pull_request.labels.*.name) }}
+        run: |
+          echo "Labels: $LABELS"
+          if echo "$LABELS" | grep -q '"qa-changes-requested"'; then
+            echo "::error::QA requested changes."; exit 1
+          fi
+          if ! echo "$LABELS" | grep -q '"qa-approved"'; then
+            echo "::error::Waiting for QA review (label qa-approved)."; exit 1
+          fi
+          echo "QA approved."

@@ -1,0 +1,10 @@
+schema_version: "1.1"
+name: review-planted-defects-weight-entry
+expected_outcome: |
+  A review report in English that marks the spec as not ready for development, finds the contradiction between
+  BR-1 (20-300 kg) and AC-DEMO-002 (30-250 kg), the missing behaviour for a second entry on the same date (BR-3),
+  the ambiguous 7-day edit window, the unbounded "последние записи", the non-atomic AC-DEMO-003, and the
+  implementation details in AC-DEMO-004 and the missing spec sections, and turns them into closed questions
+  in a separate PO questions document (blocking questions first) that agrees with the QA report.
+context:
+  scaffold_script: place-files.sh

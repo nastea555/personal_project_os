@@ -1,0 +1,18 @@
+{
+  "_comment": "Word starts that usually make a requirement unmeasurable. Each entry matches at a word start: 'удобн' finds 'удобно', 'удобный'. Project-specific additions and exclusions go in docs/qa/req-review-rules.json.",
+  "vague_words": {
+    "ru": [
+      "удобн", "понятн", "ненавязчив", "интуитивн", "логичн", "красив", "аккуратн",
+      "современн", "нормальн", "корректн", "приемлем", "разумн", "достаточн", "эффективн",
+      "быстр", "медленн", "легк", "прост", "гибк", "цельн", "адекватн", "своевременн",
+      "оптимальн", "сразу", "мгновенн", "по возможности", "при необходимости",
+      "и т.д.", "и т. д.", "и т.п.", "и т. п.", "примерно", "около", "как правило"
+    ],
+    "en": [
+      "user-friendly", "intuitive", "easy", "simple", "fast", "quick", "appropriate",
+      "reasonable", "sufficient", "adequate", "modern", "seamless", "robust", "efficient",
+      "properly", "correctly", "immediately", "instantly", "as needed", "if possible",
+      "etc", "and so on", "approximately", "TBD"
+    ]
+  }
+}

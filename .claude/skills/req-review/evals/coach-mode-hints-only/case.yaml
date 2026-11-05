@@ -1,0 +1,7 @@
+schema_version: "1.1"
+name: coach-mode-hints-only
+expected_outcome: |
+  Hints only: for each AC/BR the property at risk and how many findings remain, without quoting the problematic text,
+  explaining the defects or proposing fixes.
+context:
+  scaffold_script: place-files.sh

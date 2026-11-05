@@ -1,0 +1,37 @@
+name: Defect
+description: Behaviour that does not match the spec
+title: "<where>: <what is wrong>"
+labels: ["defect"]
+body:
+  - type: input
+    id: req
+    attributes:
+      label: Requirement / test case
+      placeholder: "AC-UI-021 · TC-UI-018"
+    validations:
+      required: true
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options: ["High", "Medium", "Low"]
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: "1. …\n2. …"
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected (quote the requirement) / Actual
+    validations:
+      required: true
+  - type: textarea
+    id: env
+    attributes:
+      label: Environment
+      placeholder: "Commit, browser, window width, backend state"

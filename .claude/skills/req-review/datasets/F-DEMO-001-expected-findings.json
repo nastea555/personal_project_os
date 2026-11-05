@@ -1,0 +1,218 @@
+{
+  "fixture": "../evals/review-planted-defects-weight-entry/files/F-DEMO-001-weight-entry.md",
+  "matrix": "../evals/review-planted-defects-weight-entry/files/F-DEMO-001-matrix.md",
+  "notes": "Answer key for the planted defects. detectable_by=script: the deterministic scripts must report it (expect lists code+ref). detectable_by=ai: only the AI review pass can find it; it is matched by location and category when the AI review is evaluated.",
+  "defects": [
+    {
+      "id": "D-01",
+      "where": "AC-DEMO-001",
+      "category": "vague-wording",
+      "property": "verifiable",
+      "severity": "Medium",
+      "detectable_by": "script",
+      "expect": [
+        {
+          "code": "VAGUE_WORD",
+          "ref": "AC-DEMO-001"
+        }
+      ],
+      "quote": "запись быстро появляется в списке",
+      "why": "'быстро' has no threshold, so two testers can disagree. Needs a number (e.g. within 1 s) or should be dropped."
+    },
+    {
+      "id": "D-02",
+      "where": "AC-DEMO-002",
+      "category": "contradiction",
+      "property": "consistent",
+      "severity": "High",
+      "detectable_by": "ai",
+      "expect": [],
+      "quote": "меньше 30 или больше 250 кг отклоняются",
+      "why": "BR-1 allows 20–300 kg. Valid values 20–29.9 and 250.1–300 would be rejected. TC-DEMO-002 follows the AC, so the tests would 'pass' while breaking the business rule."
+    },
+    {
+      "id": "D-03",
+      "where": "AC-DEMO-003",
+      "category": "non-atomic",
+      "property": "singular",
+      "severity": "Medium",
+      "detectable_by": "ai",
+      "expect": [],
+      "quote": "запись не создаётся, … сообщение …, значение остаётся …, фокус переходит …, при повторной ошибке …",
+      "why": "Five separate behaviours in one AC; one failure fails the whole AC and the report says nothing about which part broke. The 'repeated error → red' part also has no TC."
+    },
+    {
+      "id": "D-04",
+      "where": "AC-DEMO-003",
+      "category": "vague-wording",
+      "property": "verifiable",
+      "severity": "Medium",
+      "detectable_by": "script",
+      "expect": [
+        {
+          "code": "VAGUE_WORD",
+          "ref": "AC-DEMO-003"
+        }
+      ],
+      "quote": "понятное сообщение об ошибке",
+      "why": "'понятное' is subjective. The AC should give the exact text or its required content (e.g. allowed range)."
+    },
+    {
+      "id": "D-05",
+      "where": "AC-DEMO-004",
+      "category": "implementation-detail",
+      "property": "implementation-free",
+      "severity": "Low",
+      "detectable_by": "ai",
+      "expect": [],
+      "quote": "записывается в таблицу `weight_entries` через `WeightRepository.save()`",
+      "why": "Table and class names are design, not user-observable behaviour. Renaming the class would 'break' the AC. Keep only: the entry is still in the list after reload."
+    },
+    {
+      "id": "D-06",
+      "where": "AC-DEMO-003 (second row)",
+      "category": "duplicate-id",
+      "property": "unambiguous",
+      "severity": "High",
+      "detectable_by": "script",
+      "expect": [
+        {
+          "code": "DUPLICATE_ID",
+          "ref": "AC-DEMO-003"
+        }
+      ],
+      "quote": "| **AC-DEMO-003** | Список показывает последние записи",
+      "why": "Two different requirements share one ID; TC-DEMO-003 and TC-DEMO-005 both claim AC-DEMO-003, so it is impossible to tell what is covered."
+    },
+    {
+      "id": "D-07",
+      "where": "AC-DEMO-003 (second row)",
+      "category": "ambiguous",
+      "property": "unambiguous",
+      "severity": "Medium",
+      "detectable_by": "ai",
+      "expect": [],
+      "quote": "показывает последние записи",
+      "why": "How many is 'последние'? 7, 30, all? Sorted by entry date or by creation time? Tester cannot write an expected result."
+    },
+    {
+      "id": "D-08",
+      "where": "AC-DEMO-005",
+      "category": "ambiguous-boundary",
+      "property": "unambiguous",
+      "severity": "Medium",
+      "detectable_by": "ai",
+      "expect": [],
+      "quote": "в течение 7 дней",
+      "why": "7 days from what — the entry date or the moment it was created? Is day 7 inclusive? What does the user see on day 8?"
+    },
+    {
+      "id": "D-09",
+      "where": "AC-DEMO-005",
+      "category": "traceability",
+      "property": "coverage",
+      "severity": "Medium",
+      "detectable_by": "script",
+      "expect": [
+        {
+          "code": "REQ_WITHOUT_TC",
+          "ref": "AC-DEMO-005"
+        }
+      ],
+      "quote": "| AC-DEMO-005 | | | Not implemented |",
+      "why": "No test case verifies editing."
+    },
+    {
+      "id": "D-10",
+      "where": "BR-3 / section 5",
+      "category": "missing-requirement",
+      "property": "complete",
+      "severity": "High",
+      "detectable_by": "ai",
+      "expect": [],
+      "quote": "BR-3. На одну дату — не больше одной записи.",
+      "why": "No AC says what happens when the user saves a second entry for the same date: error, overwrite, or ask? The developer will guess."
+    },
+    {
+      "id": "D-11",
+      "where": "TC-DEMO-004",
+      "category": "traceability",
+      "property": "consistent",
+      "severity": "Medium",
+      "detectable_by": "script",
+      "expect": [
+        {
+          "code": "LINK_ONLY_IN_SPEC",
+          "ref": "TC-DEMO-004"
+        },
+        {
+          "code": "LINK_ONLY_IN_MATRIX",
+          "ref": "AC-DEMO-002"
+        }
+      ],
+      "quote": "spec: TC-DEMO-004 → AC-DEMO-004; matrix: TC-DEMO-004 under AC-DEMO-002",
+      "why": "Spec and matrix disagree, so the coverage report is wrong for two requirements."
+    },
+    {
+      "id": "D-12",
+      "where": "matrix summary",
+      "category": "traceability",
+      "property": "coverage",
+      "severity": "Low",
+      "detectable_by": "script",
+      "expect": [
+        {
+          "code": "STALE_SUMMARY",
+          "ref": null
+        }
+      ],
+      "quote": "Покрытие: 5/5 AC; 5 TC.",
+      "why": "Claims full coverage; AC-DEMO-005 has no TC."
+    },
+    {
+      "id": "D-13",
+      "where": "AC-DEMO-004",
+      "category": "ambiguous",
+      "property": "unambiguous",
+      "severity": "Medium",
+      "detectable_by": "ai",
+      "expect": [],
+      "quote": "отображается в списке после перезагрузки страницы",
+      "why": "Two readings: 'the entry survives a page reload' (persistence) or 'the entry appears only after a reload'. Neither AC-DEMO-001 nor AC-DEMO-004 says the list updates without a reload.",
+      "found_by": "QA review 2026-11-02 (not planted; added to the key)"
+    },
+    {
+      "id": "D-14",
+      "where": "spec structure",
+      "category": "missing-section",
+      "property": "complete",
+      "severity": "Medium",
+      "detectable_by": "script",
+      "expect": [
+        {
+          "code": "MISSING_SECTION",
+          "ref": "validation and edge cases"
+        },
+        {
+          "code": "MISSING_SECTION",
+          "ref": "UI states"
+        },
+        {
+          "code": "MISSING_SECTION",
+          "ref": "API contract / data model"
+        },
+        {
+          "code": "MISSING_SECTION",
+          "ref": "security and performance"
+        },
+        {
+          "code": "MISSING_SECTION",
+          "ref": "limitations and open questions"
+        }
+      ],
+      "quote": "Sections present: 1, 2, 3, 4, 5, 11",
+      "why": "The spec template requires edge cases, UI states, API/data model, security/performance and limitations/open questions. Without them nobody can tell whether e.g. the error states or the API were forgotten or deliberately left out.",
+      "found_by": "check_sections.py (added 2026-11-02 when the skill was extended to whole-spec review)"
+    }
+  ]
+}

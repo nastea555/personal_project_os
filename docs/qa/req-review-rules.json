@@ -1,0 +1,8 @@
+{
+  "_comment": "Project rules for .claude/skills/req-review/scripts/lint_terms.py. bare_terms: a glossary term and the qualifiers that must appear near it (see the Термины section of each spec).",
+  "bare_terms": {
+    "меню": ["выдвижн", "Открыть меню", "Закрыть меню"]
+  },
+  "vague_words_extra": [],
+  "vague_words_ignore": []
+}
